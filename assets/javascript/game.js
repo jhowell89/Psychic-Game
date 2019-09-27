@@ -1,36 +1,48 @@
-var incorrectChoices = ["b", "d", "e", "f", "g", "h", "i", "j", "k", "m", "n", "o", "p", "q", "r", "t", "v", "w", "x", "y", "z"];
-var correctChoices = ["l", "u", "c", "a", "s"];
-var userText = document.getElementById("user-text");
-console.log(userText)
-var winText = document.getElementById("win-count");
-var lossText = document.getElementById("loss-count");
-var guessesLeft = document.getElementById("guesses-left");
-var guessesSoFar = document.getElementById("yourGuessSofar");
+var letters = "abcdefghijklmnopqrstuvwxyz".split("");
+var wins = 0;
+var losses = 0;
 var guesses = 9;
-var guessCount = 0;
+var computerGuess = letters[Math.floor(Math.random() * letters.length)];
+var userGuessSoFar = [];
+var winPoints = document.getElementById("wins");
+var guessesLeft = document.getElementById("guessLeft");
+var losePoints = document.getElementById("losses");
+var guessSoFar = document.getElementById("guess-so-far");
+
+function updateDisplays() {
+  winPoints.textContent = wins;
+  guessesLeft.textContent = guesses;
+  losePoints.textContent = losses;
+}
+
 document.onkeyup = function(event) {
-        userText.textContent = event.key;
-// index of
-        console.log(incorrectChoices.indexOf(event.key)>=0)
-        console.log(event.key)
-        if(incorrectChoices.indexOf(event.key)>=0){
-            lossText.textContent++;
-            alert("You guessed the incorrect letter. You lost, try again. ");
-        
-        }
-        else{
-            winText.textContent++;
-            console.log("true");
-        }    
+
+  var userGuess = event.key;
+  userGuessSoFar.push(userGuess);
+  guessSoFar.textContent = userGuessSoFar;
+
+  if (userGuess == computerGuess) {
+
+    wins++;
+    guesses = 9
+    userGuessSoFar = [];
+    computerGuess = letters[Math.floor(Math.random() * letters.length)];
+
+  } else {
+
+    guesses--;
+
+    if (guesses == 0) {
+      losses++;
+      userGuessSoFar = [];
+      guesses = 9;
+    }
+
   }
 
+  updateDisplays();
 
-  //create a guess count
-
-  // create how many guesses left
-
-/* Clear/Reset the text field */    
-function ClearFields() {
-    
-         document.getElementById('guesses-left').value = "";
 }
+
+
+updateDisplays();
